@@ -1,0 +1,44 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebAssembly Fibonacci Demonstration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/css/foundation.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/motion-ui/1.2.3/motion-ui.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/css/foundation-prototype.min.css">
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css' rel='stylesheet'
+        type='text/css'>
+    <script type="module" src="app.mjs"></script>
+</head>
+
+<body>
+    <div class="callout large">
+        <div class="row column text-center">
+            <h1>WebAssembly Fibonacci Demonstration</h1>
+            <p class="lead">Compare wasteful CPU performance of WebAssembly and JavaScript</p>
+        </div>
+    </div>
+
+    <article class="grid-container">
+        <div class="row column">
+            <h2>Calculate Fibonacci Number</h2>
+            <p>
+                Calculate the n-th Fibonacci number in two different ways
+                and compare the execution times. The calculation is done 
+                using
+            </p>
+            <ul>
+                <li>JavaScript</li>
+                <li>WebAssembly</li>
+            </ul>
+        </div>
+
+        <div id="app">
+        </div>
+    </article>
+</body>
+
+</html>
