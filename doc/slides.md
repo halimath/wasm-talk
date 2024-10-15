@@ -34,7 +34,7 @@ backgroundImage: url('https://marp.app/assets/hero-background.svg')
 # How to run?
 
 * Built-in browser support: https://caniuse.com/?search=wasm
-![width:auto](./doc/caniuse.png)
+![width:auto](./caniuse.png)
 
 * Built-in _node.js_ support
 * Dedicated / stand-alone interpreters (see later)
@@ -95,7 +95,11 @@ WebAssembly 2.0 (draf) will address some of these with
 * reference types
 * optional GC to be used to cleanup WebAssembly memory
 
-Alternative strategy: 3-tier app: JS (UI) -> WASM middleware -> backend service
+---
+
+# 3-tier web app architecture
+
+![3-tier web app architecture](./3-tier-arch.png)
 
 --- 
 
@@ -139,7 +143,19 @@ Alternative strategy: 3-tier app: JS (UI) -> WASM middleware -> backend service
 
 `2 + 3`
 
+```lisp
+i32.const 2
+i32.const 3
+i32.add
 ```
+
+---
+
+# How does a virtual stack machine work (cont.)
+
+`2 + 3`
+
+```lisp
 i32.const 2
 i32.const 3
 i32.add
@@ -147,7 +163,7 @@ i32.add
 
 ... or equivalent as _S-expressions_
 
-```
+```lisp
 (i32.add
     (i32.const 2)
     (i32.const 3)
@@ -299,6 +315,10 @@ Implementation | Time for `fib(45)` [s]
 JavaScript | 6.3
 C (native; optimized) | 2.0
 JavaScript (dynamic programming; bottom up) | 0.05
+
+---
+
+# Live Demo
 
 ---
 

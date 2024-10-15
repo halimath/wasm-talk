@@ -1,0 +1,28 @@
+vars: {
+    d2-config: {
+        layout-engine: elk
+        theme-id: 4
+    }
+}
+
+direction: right
+
+browser {
+    label: Browser
+
+    view {
+        label: View-Tier (JS based)
+    }
+
+    middle {
+        label: Logic Tier (WASM based)
+    }
+
+    view <-> middle: JS-WASM-Interop
+}
+
+backend {
+    label: Backend System
+}
+
+browser.middle <-> backend: RESTful/GraphQL/gRPC

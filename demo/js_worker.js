@@ -1,31 +1,26 @@
-function fib(n) {
-    if (n < 2) {
-        return n
+function quicksort(arr) {
+    if (arr.length <= 1) {
+        return arr;
     }
 
-    let a = 0
-    let b = 1
+    const pivot = arr[Math.floor(arr.length / 2)];
+    const left = arr.filter(x => x < pivot);
+    const middle = arr.filter(x => x === pivot);
+    const right = arr.filter(x => x > pivot);
 
-    for (let i = 2; i <= n; i++) {
-        const tmp = a + b
-        a = b
-        b = tmp
-    }
-
-    return b
+    return [...quicksort(left), ...middle, ...quicksort(right)];
 }
 
 onmessage = (evt) => {
-    const number = evt.data
-    console.log(`js_worker: Received message to calculate fib(${number})`)
+    const data = evt.data
+    console.log(`js_worker: Received message to sort array of length ${data.length}`)
     const start = new Date()
-    const result = fib(number)
+    quicksort(data)
     const end = new Date()
     
-    console.log(`js_worker: fib(${number}) finished; sending back result`);
+    console.log(`js_worker: sorting finished; sending back result`);
     postMessage({
         start: start,
         end: end,
-        number: result,
     })
   }

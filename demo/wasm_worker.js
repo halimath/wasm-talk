@@ -1,25 +1,21 @@
 
-console.log("Loading fib.wasm")
-fetch("/fib.wasm")
-    .then(response => { console.log(response); return response.arrayBuffer() })
+fetch("/quicksort.wasm")
+    .then(response => response.arrayBuffer())
     .then(bytes => WebAssembly.instantiate(bytes, {}))
-    .then(wasmFib => {
-        console.log(wasmFib)
-
+    .then(wasmModule => {       
         onmessage = (evt) => {
-            const number = evt.data
-            console.log(`wasm_worker: Received message to calculate fib(${number})`)
+            const data = evt.data
+            console.log(`wasm_worker: Received message to sort array of length ${data.length}`)
             const start = new Date()
-            const result = wasmFib.instance.exports.fib(number)
+            wasmModule.instance.exports.quicksort(data)
             const end = new Date()
-        
-            console.log(`wasm_worker: fib(${number}) finished; sending back result`);
+            
+            console.log(`wasm_worker: sorting finished; sending back result`);
             postMessage({
                 start: start,
                 end: end,
-                number: result,
             })
-        }
-    });
+          }
+});
 
 

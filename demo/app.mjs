@@ -3,10 +3,9 @@ import JsWorker from "./js_worker?worker"
 import WasmWorker from "./wasm_worker?worker"
 
 class Result {
-    constructor (start, end, number) {
+    constructor (start, end) {
         this.start = start
         this.end = end
-        this.number = number
     }
 
     get duration() {        
@@ -30,9 +29,9 @@ function view({model, emit}) {
     return wecco.html`
     <div class="grid-x grid-margin-x">
         <div class="medium-4 cell">
-            <label class="medium-8" for="number">Fibonacci number to calculate</label>
-            <input class="medium-4" id="number" type="number" placeholder="10" min="1" max="50" value={model.inputNumber} @change=${evt => emit({action: "updateInput", value: evt.target.value})}>
-            <button class="button" @click=${emit.bind(null, { action: "calculate" })}>Calcuate</button>
+            <label class="medium-8" for="number">Size of the array to generate randomly</label>
+            <input class="medium-4" id="number" type="number" placeholder="10" min="1" max="50" value=${model.inputNumber} @change=${evt => emit({action: "updateInput", value: evt.target.value})}>
+            <button class="button" @click=${emit.bind(null, { action: "sort" })}>Sort</button>
         </div>
         
         <div class="medium-4 cell">
@@ -58,7 +57,7 @@ function resultView(result) {
     }
 
     return wecco.html`
-        <p>Result is <code>${result.number}</code>. Took ${result.duration / 1000}s.</p>
+        <p>Complete. Took <span class="stat">${result.duration / 1000}s</span>.</p>
     `
 }
 
@@ -71,9 +70,14 @@ document.addEventListener("DOMContentLoaded", () => {
             case "updateInput":
                 return new Model(parseInt(message.value))
             
-            case "calculate":    
-                jsWorker.postMessage(model.inputNumber)
-                wasmWorker.postMessage(model.inputNumber)
+            case "sort":
+                const randomData = []
+                for (let i = 0; i < model.inputNumber; i++) {
+                    randomData.push(Math.floor(Math.random() * 100_000))
+                }
+
+                jsWorker.postMessage(randomData)
+                wasmWorker.postMessage(randomData)
     
                 return new Model(model.inputNumber, new Result(new Date()), new Result(new Date()))
     
@@ -83,14 +87,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     message.source === "wasm" ? message.result : model.wasm,
                 )
         }
-    
-        console.log(model)
-        console.log(message)
-        // TODO: Implement
-        return new Model()
+
+        console.error(`unhandled message: ${message}`)
+        return model
     }
 
-    const app = wecco.createApp(() => new Model(), update, view)
+    const app = wecco.createApp(() => new Model(10_000_000), update, view)
         .mount("#app")
 
     jsWorker.onmessage = e => {

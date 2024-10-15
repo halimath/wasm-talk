@@ -1,9 +1,9 @@
-CC=emcc
-CFLAGS=-Wall -O3 --no-entry
+CC ?= emcc
+CFLAGS ?= -Wall -O3 --no-entry
 
-../public/fib.wasm: fib.c
+../public/quicksort.wasm: quicksort.c
 	emcc $(CFLAGS) $< -o $@
 
 .PHONY: clean
 clean:
-	rm -rf ../public/fib.wasm
+	rm -rf ../public/quicksort.wasm
